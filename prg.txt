@@ -1,0 +1,8 @@
+[start]
+adi rA 1
+prt rA
+brn rA 10 stop
+jmp start
+
+[stop]
+hlt
