@@ -38,8 +38,8 @@ public class CPU
     static String readFile(String path, Charset encoding)
             throws IOException
     {
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
-        return new String(encoded, encoding);
+        byte[] eninstructiond = Files.readAllBytes(Paths.get(path));
+        return new String(eninstructiond, encoding);
     }
 
     /*
@@ -68,13 +68,13 @@ public class CPU
                 }
         }
 
-        String[] code;
+        String[] instruction;
         while(pc < lines.length) {
             String result = (lines[pc].contains("//")) ? lines[pc].substring(0, lines[pc].indexOf("//")) : lines[pc];
-            code = result.trim().replaceAll("\\s+", " ").split(" ");
+            instruction = result.trim().replaceAll("\\s+", " ").split(" ");
             int jmpAdr;
             int reg;
-            switch(code[0])
+            switch(instruction[0])
             {
                 case "nop":
                     pc++;
@@ -84,10 +84,10 @@ public class CPU
                     return;
 
                 case "jmp":
-                    if(labels.containsKey(code[1])) {
-                        pc = labels.get(code[1])-1;
+                    if(labels.containsKey(instruction[1])) {
+                        pc = labels.get(instruction[1])-1;
                     }else {
-                        pc = Integer.parseInt(code[1]) - 1;
+                        pc = Integer.parseInt(instruction[1]) - 1;
                     }
                     break;
 
@@ -96,28 +96,28 @@ public class CPU
                     int reg1;
                     int reg2;
 
-                    reg1 = switch (code[1]) {
-                        case "rA" -> getRegisterValue("rA");
-                        case "rB" -> getRegisterValue("rB");
-                        case "rC" -> getRegisterValue("rC");
-                        default -> throw new IllegalArgumentException("Unknown register: " + code[1]);
+                    reg1 = switch (instruction[1]) {
+                        case "rA" -> getRegVal("rA");
+                        case "rB" -> getRegVal("rB");
+                        case "rC" -> getRegVal("rC");
+                        default -> throw new IllegalArgumentException("Unknown register: " + instruction[1]);
                     };
 
-                    reg2 = switch (code[1]) {
-                        case "rA" -> getRegisterValue("rA");
-                        case "rB" -> getRegisterValue("rB");
-                        case "rC" -> getRegisterValue("rC");
-                        default -> throw new IllegalArgumentException("Unknown register: " + code[2]);
+                    reg2 = switch (instruction[1]) {
+                        case "rA" -> getRegVal("rA");
+                        case "rB" -> getRegVal("rB");
+                        case "rC" -> getRegVal("rC");
+                        default -> throw new IllegalArgumentException("Unknown register: " + instruction[2]);
                     };
 
-                    if(code[0].equals("add")) {
-                        switch(code[3]) {
+                    if(instruction[0].equals("add")) {
+                        switch(instruction[3]) {
                             case "rA" -> regA = reg1 + reg2;
                             case "rB" -> regB = reg1 + reg2;
                             case "rC" -> regC = reg1 + reg2;
                         }
-                    } else if(code[0].equals("sub")) {
-                        switch(code[3]) {
+                    } else if(instruction[0].equals("sub")) {
+                        switch(instruction[3]) {
                             case "rA" -> regA = reg2 - reg1;
                             case "rB" -> regB = reg2 - reg1;
                             case "rC" -> regC = reg2 - reg1;
@@ -127,34 +127,34 @@ public class CPU
                     break;
 
                 case "ldi":
-                    switch(code[1]) {
-                        case "rA" -> regA = Integer.parseInt(code[2]);
-                        case "rB" -> regB = Integer.parseInt(code[2]);
-                        case "rC" -> regC = Integer.parseInt(code[2]);
+                    switch(instruction[1]) {
+                        case "rA" -> regA = Integer.parseInt(instruction[2]);
+                        case "rB" -> regB = Integer.parseInt(instruction[2]);
+                        case "rC" -> regC = Integer.parseInt(instruction[2]);
                     }
                     pc++;
                     break;
 
                 case "adi":
-                    switch (code[1]) {
-                        case "rA" -> regA+=Integer.parseInt(code[2]);
-                        case "rB" -> regB+=Integer.parseInt(code[2]);
-                        case "rC" -> regC+=Integer.parseInt(code[2]);
+                    switch (instruction[1]) {
+                        case "rA" -> regA+=Integer.parseInt(instruction[2]);
+                        case "rB" -> regB+=Integer.parseInt(instruction[2]);
+                        case "rC" -> regC+=Integer.parseInt(instruction[2]);
                     }
                     pc++;
                     break;
 
                 case "sdi":
-                    switch (code[1]) {
-                        case "rA" -> regA-=Integer.parseInt(code[2]);
-                        case "rB" -> regB-=Integer.parseInt(code[2]);
-                        case "rC" -> regC-=Integer.parseInt(code[2]);
+                    switch (instruction[1]) {
+                        case "rA" -> regA-=Integer.parseInt(instruction[2]);
+                        case "rB" -> regB-=Integer.parseInt(instruction[2]);
+                        case "rC" -> regC-=Integer.parseInt(instruction[2]);
                     }
                     pc++;
                     break;
 
                 case "prt":
-                    switch(code[1]) {
+                    switch(instruction[1]) {
                         case "rA" -> System.out.println(regA);
                         case "rB" -> System.out.println(regB);
                         case "rC" -> System.out.println(regC);
@@ -163,30 +163,30 @@ public class CPU
                     break;
 
                 case "bz":
-                    jmpAdr = Integer.parseInt(code[2]);
-                    reg = getRegisterValue(code[1]);
-                    if(reg == 0 && labels.containsKey(code[3])) {
-                        jmpAdr = labels.get(code[3])-1;
+                    jmpAdr = Integer.parseInt(instruction[2]);
+                    reg = getRegVal(instruction[1]);
+                    if(reg == 0 && labels.containsKey(instruction[3])) {
+                        jmpAdr = labels.get(instruction[3])-1;
                     }
                     pc = reg == 0 ? jmpAdr : pc + 1;
                     break;
 
                 case "bnz":
-                    jmpAdr = Integer.parseInt(code[2]);
-                    reg = getRegisterValue(code[1]);
-                    if(reg != 0 && labels.containsKey(code[3])) {
-                        jmpAdr = labels.get(code[3])-1;
+                    jmpAdr = Integer.parseInt(instruction[2]);
+                    reg = getRegVal(instruction[1]);
+                    if(reg != 0 && labels.containsKey(instruction[3])) {
+                        jmpAdr = labels.get(instruction[3])-1;
                     }
                     pc = reg != 0 ? jmpAdr : pc + 1;
                     break;
 
                 case "brn":
-                    jmpAdr = Integer.parseInt(code[2]);
-                    reg = getRegisterValue(code[1]);
-                    if(reg == Integer.parseInt(code[2]) && labels.containsKey(code[3])) {
-                        jmpAdr = labels.get(code[3])-1;
+                    jmpAdr = Integer.parseInt(instruction[2]);
+                    reg = getRegVal(instruction[1]);
+                    if(reg == Integer.parseInt(instruction[2]) && labels.containsKey(instruction[3])) {
+                        jmpAdr = labels.get(instruction[3])-1;
                     }
-                    pc = reg == Integer.parseInt(code[2]) ? jmpAdr : pc + 1;
+                    pc = reg == Integer.parseInt(instruction[2]) ? jmpAdr : pc + 1;
                     break;
 
                 default:
@@ -196,7 +196,7 @@ public class CPU
         }
     }
 
-    private int getRegisterValue(String register) {
+    private int getRegVal(String register) {
         return switch (register) {
             case "rA" -> regA;
             case "rB" -> regB;
