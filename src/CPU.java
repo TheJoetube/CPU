@@ -49,8 +49,8 @@ public class CPU
     add<r1><r2><r3>: adds r1 and r2 and places the result in r3
     sub<r1><r2><r3>: subtracts r1 from r2 and places the result in r3
     ldi<r1><v>: loads a value into the register
-    adi<r1><v>: adds a value to the register
-    sdi<r1><v>: subtracts a value from the register
+    inc<r1><v>: adds a value to the register
+    dec<r1><v>: subtracts a value from the register
     jmp<adr>: jumps the program counter to an address
     prt<r1>: prints the register to the output
     bz<r1><adr>: branches if r1 is 0
@@ -142,7 +142,7 @@ public class CPU
                     pc++;
                     break;
 
-                case "adi":
+                case "inc":
                     switch (instruction[1]) {
                         case "rA" -> regA+=Integer.parseInt(instruction[2]);
                         case "rB" -> regB+=Integer.parseInt(instruction[2]);
@@ -152,7 +152,7 @@ public class CPU
                     pc++;
                     break;
 
-                case "sdi":
+                case "dec":
                     switch (instruction[1]) {
                         case "rA" -> regA-=Integer.parseInt(instruction[2]);
                         case "rB" -> regB-=Integer.parseInt(instruction[2]);

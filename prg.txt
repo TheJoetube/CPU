@@ -5,7 +5,7 @@ jmp start
 [start]
 bz 0x0000 stop
 jmp addition
-sdi 0x0000 1
+dec 0x0000 1
 jmp start
 
 [addition]
