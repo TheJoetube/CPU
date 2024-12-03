@@ -19,7 +19,7 @@ bz<r1><adr>: branches if r1 is 0
 bnz<r1><adr>: branches if r1 is not 0
 brn<r1><v><adr>: branches if r1 is v
 ```
-Labels are also supported, just create one by wrapping the name in ```[ ]``` (example: ```[start]```).
+Labels are also supported, just create one by wrapping the name in ```[ ]``` (example: ```[start]```) and reference it by just typing the name without the ```[ ]``` (example: ```jmp start```).
 
 Comments can also be made with ```//``` in a new line or at the end of a new line.
 
