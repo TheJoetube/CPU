@@ -2,7 +2,7 @@ A simple CPU written in java.
 Right now it only directly executes assembly code.
 
 It has 3 registers ```rA,rB,rC```.
-Memory will be added soon.
+Memory size is 0x0000 - 0xFFFF but can be expanded at will.
 
 The current instruction set:
 ```
