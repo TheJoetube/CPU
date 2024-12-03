@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="CPU:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a9d0b9ee-e728-49db-829f-d48a0b09b6a4" name="Changes" comment="fixed the branches to work with labels and added the rtn instruction">
+    <list default="true" id="a9d0b9ee-e728-49db-829f-d48a0b09b6a4" name="Changes" comment="added memory which can also be customized (0xFFFF by default). You can directly address these addresses by any instruction instead of registers.&#10;(I hope it works)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prg.txt" beforeDir="false" afterPath="$PROJECT_DIR$/prg.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CPU.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CPU.java" afterDir="false" />
@@ -36,6 +41,9 @@
     &quot;accountId&quot;: &quot;a18c5e78-f08d-41c0-ac4f-6a66917b21ea&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -54,6 +62,9 @@
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Jonah/Desktop/Java/CPU",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.28686637",
     "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
   }
 }]]></component>
@@ -123,7 +134,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733238581783</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="added memory which can also be customized (0xFFFF by default). You can directly address these addresses by any instruction instead of registers.&#10;(I hope it works)">
+      <option name="closed" value="true" />
+      <created>1733240464363</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1733240464363</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -135,6 +154,7 @@
     <MESSAGE value="added README.md" />
     <MESSAGE value="changed some namings" />
     <MESSAGE value="fixed the branches to work with labels and added the rtn instruction" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed the branches to work with labels and added the rtn instruction" />
+    <MESSAGE value="added memory which can also be customized (0xFFFF by default). You can directly address these addresses by any instruction instead of registers.&#10;(I hope it works)" />
+    <option name="LAST_COMMIT_MESSAGE" value="added memory which can also be customized (0xFFFF by default). You can directly address these addresses by any instruction instead of registers.&#10;(I hope it works)" />
   </component>
 </project>
