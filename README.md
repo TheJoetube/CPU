@@ -18,6 +18,7 @@ prt<r1>: prints the register to the output
 bz<r1><adr>: branches if r1 is 0
 bnz<r1><adr>: branches if r1 is not 0
 brn<r1><v><adr>: branches if r1 is v
+rtn: returns to the last branch or jump
 ```
 Labels are also supported, just create one by wrapping the name in ```[ ]``` (example: ```[start]```) and reference it by just typing the name without the ```[ ]``` (example: ```jmp start```).
 
