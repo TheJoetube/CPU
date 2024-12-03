@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class CPU
 {
-    HashMap<String, String> memory = new HashMap<>();
+    int[] memory;
 
     String program;
 
@@ -22,14 +22,16 @@ public class CPU
         regA = 0;
         regB = 0;
         regC = 0;
+        memory = new int[0xFFFF];
         program = "";
     }
 
-    public CPU(String prg) throws IOException {
+    public CPU(String prg, int memorySize) throws IOException {
         pc = 0;
         regA = 0;
         regB = 0;
         regC = 0;
+        memory = new int[memorySize];
         this.program = readFile(prg, Charset.defaultCharset());
         //System.out.println(program);
     }
@@ -88,7 +90,7 @@ public class CPU
                     rtnStack.push(pc);
                     if(labels.containsKey(instruction[1])) {
                         pc = labels.get(instruction[1])-1;
-                    }else {
+                    } else {
                         pc = Integer.parseInt(instruction[1]) - 1;
                     }
                     break;
@@ -102,14 +104,14 @@ public class CPU
                         case "rA" -> getRegVal("rA");
                         case "rB" -> getRegVal("rB");
                         case "rC" -> getRegVal("rC");
-                        default -> throw new IllegalArgumentException("Unknown register: " + instruction[1]);
+                        default -> Integer.decode(instruction[1]);
                     };
 
                     reg2 = switch (instruction[2]) {
                         case "rA" -> getRegVal("rA");
                         case "rB" -> getRegVal("rB");
                         case "rC" -> getRegVal("rC");
-                        default -> throw new IllegalArgumentException("Unknown register: " + instruction[2]);
+                        default -> Integer.decode(instruction[2]);
                     };
 
                     if(instruction[0].equals("add")) {
@@ -117,12 +119,14 @@ public class CPU
                             case "rA" -> regA = reg1 + reg2;
                             case "rB" -> regB = reg1 + reg2;
                             case "rC" -> regC = reg1 + reg2;
+                            default -> memory[Integer.decode(instruction[3])] = memory[reg1] + memory[reg2];
                         }
                     } else if(instruction[0].equals("sub")) {
                         switch(instruction[3]) {
                             case "rA" -> regA = reg2 - reg1;
                             case "rB" -> regB = reg2 - reg1;
                             case "rC" -> regC = reg2 - reg1;
+                            default -> memory[Integer.decode(instruction[3])] = memory[reg1] + memory[reg2];
                         }
                     }
                     pc++;
@@ -133,6 +137,7 @@ public class CPU
                         case "rA" -> regA = Integer.parseInt(instruction[2]);
                         case "rB" -> regB = Integer.parseInt(instruction[2]);
                         case "rC" -> regC = Integer.parseInt(instruction[2]);
+                        default -> memory[Integer.decode(instruction[1])] = Integer.parseInt(instruction[2]);
                     }
                     pc++;
                     break;
@@ -142,6 +147,7 @@ public class CPU
                         case "rA" -> regA+=Integer.parseInt(instruction[2]);
                         case "rB" -> regB+=Integer.parseInt(instruction[2]);
                         case "rC" -> regC+=Integer.parseInt(instruction[2]);
+                        default -> memory[Integer.decode(instruction[1])] += Integer.parseInt(instruction[2]);
                     }
                     pc++;
                     break;
@@ -151,6 +157,7 @@ public class CPU
                         case "rA" -> regA-=Integer.parseInt(instruction[2]);
                         case "rB" -> regB-=Integer.parseInt(instruction[2]);
                         case "rC" -> regC-=Integer.parseInt(instruction[2]);
+                        default -> memory[Integer.decode(instruction[1])] -= Integer.parseInt(instruction[2]);
                     }
                     pc++;
                     break;
@@ -160,6 +167,7 @@ public class CPU
                         case "rA" -> System.out.println(regA);
                         case "rB" -> System.out.println(regB);
                         case "rC" -> System.out.println(regC);
+                        default -> System.out.println(memory[Integer.decode(instruction[1])]);
                     }
                     pc++;
                     break;
@@ -231,13 +239,13 @@ public class CPU
             case "rA" -> regA;
             case "rB" -> regB;
             case "rC" -> regC;
-            default -> throw new IllegalArgumentException("Unknown register: " + register);
+            default -> memory[Integer.decode(register)];
         };
     }
 
 
     public static void main(String[] args) throws IOException {
-        CPU cpu = new CPU("prg.txt");
+        CPU cpu = new CPU("prg.txt", 0xFFFF);
         cpu.interp();
     }
 }

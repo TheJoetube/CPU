@@ -1,16 +1,16 @@
-ldi rA 10
-ldi rB 1
+ldi 0x0000 10
+ldi 0x0001 1
 jmp start
 
 [start]
-bz rA stop
+bz 0x0000 stop
 jmp addition
-sdi rA 1
+sdi 0x0000 1
 jmp start
 
 [addition]
-add rA rB rC
-prt rC
+add 0x0000 0x0001 0x0002
+prt 0x0002
 rtn
 
 [stop]
