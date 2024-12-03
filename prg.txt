@@ -1,8 +1,17 @@
-[start]
-adi rA 1
-prt rA
-brn rA 10 stop
+ldi rA 10
+ldi rB 1
 jmp start
+
+[start]
+bz rA stop
+jmp addition
+sdi rA 1
+jmp start
+
+[addition]
+add rA rB rC
+prt rC
+rtn
 
 [stop]
 hlt

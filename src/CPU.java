@@ -1,9 +1,8 @@
-import java.io.FileNotFoundException;
+import java.util.Stack;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CPU
@@ -18,7 +17,7 @@ public class CPU
     int regC;
 
 
-    public CPU() throws FileNotFoundException {
+    public CPU() {
         pc = 0;
         regA = 0;
         regB = 0;
@@ -55,6 +54,7 @@ public class CPU
     bz<r1><adr>: branches if r1 is 0
     bnz<r1><adr>: branches if r1 is not 0
     brn<r1><v><adr>: branches if r1 is v
+    rtn: returns to the last branch or jump
      */
     public void interp()
     {
@@ -69,11 +69,12 @@ public class CPU
         }
 
         String[] instruction;
+        int jmpAdr = 0;
+        int reg;
+        Stack<Integer> rtnStack = new Stack<>();
         while(pc < lines.length) {
             String result = (lines[pc].contains("//")) ? lines[pc].substring(0, lines[pc].indexOf("//")) : lines[pc];
             instruction = result.trim().replaceAll("\\s+", " ").split(" ");
-            int jmpAdr;
-            int reg;
             switch(instruction[0])
             {
                 case "nop":
@@ -84,6 +85,7 @@ public class CPU
                     return;
 
                 case "jmp":
+                    rtnStack.push(pc);
                     if(labels.containsKey(instruction[1])) {
                         pc = labels.get(instruction[1])-1;
                     }else {
@@ -103,7 +105,7 @@ public class CPU
                         default -> throw new IllegalArgumentException("Unknown register: " + instruction[1]);
                     };
 
-                    reg2 = switch (instruction[1]) {
+                    reg2 = switch (instruction[2]) {
                         case "rA" -> getRegVal("rA");
                         case "rB" -> getRegVal("rB");
                         case "rC" -> getRegVal("rC");
@@ -163,30 +165,58 @@ public class CPU
                     break;
 
                 case "bz":
-                    jmpAdr = Integer.parseInt(instruction[2]);
                     reg = getRegVal(instruction[1]);
-                    if(reg == 0 && labels.containsKey(instruction[3])) {
-                        jmpAdr = labels.get(instruction[3])-1;
+                    if(reg == 0) {
+                        if(labels.containsKey(instruction[2])) {
+                            jmpAdr = labels.get(instruction[2])-1;
+                        } else {
+                            jmpAdr = Integer.parseInt(instruction[2]);
+                        }
                     }
-                    pc = reg == 0 ? jmpAdr : pc + 1;
+                    if(reg == 0) {
+                        rtnStack.push(pc);
+                        pc = jmpAdr;
+                    } else {
+                        pc++;
+                    }
                     break;
 
                 case "bnz":
-                    jmpAdr = Integer.parseInt(instruction[2]);
                     reg = getRegVal(instruction[1]);
-                    if(reg != 0 && labels.containsKey(instruction[3])) {
-                        jmpAdr = labels.get(instruction[3])-1;
+                    if(reg != 0) {
+                        if(labels.containsKey(instruction[2])) {
+                            jmpAdr = labels.get(instruction[2])-1;
+                        } else {
+                            jmpAdr = Integer.parseInt(instruction[2]);
+                        }
                     }
-                    pc = reg != 0 ? jmpAdr : pc + 1;
+                    if(reg != 0) {
+                        rtnStack.push(pc);
+                        pc = jmpAdr;
+                    } else {
+                        pc++;
+                    }
                     break;
 
                 case "brn":
-                    jmpAdr = Integer.parseInt(instruction[2]);
                     reg = getRegVal(instruction[1]);
-                    if(reg == Integer.parseInt(instruction[2]) && labels.containsKey(instruction[3])) {
-                        jmpAdr = labels.get(instruction[3])-1;
+                    if(reg == Integer.parseInt(instruction[2])) {
+                        if(labels.containsKey(instruction[3])) {
+                            jmpAdr = labels.get(instruction[3])-1;
+                        } else {
+                            jmpAdr = Integer.parseInt(instruction[2]);
+                        }
                     }
-                    pc = reg == Integer.parseInt(instruction[2]) ? jmpAdr : pc + 1;
+                    if(reg == Integer.parseInt(instruction[2])) {
+                        rtnStack.push(pc);
+                        pc = jmpAdr;
+                    } else {
+                        pc++;
+                    }
+                    break;
+
+                case "rtn":
+                    pc = rtnStack.pop() + 1;
                     break;
 
                 default:
