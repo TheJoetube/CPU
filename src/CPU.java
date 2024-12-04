@@ -58,6 +58,7 @@ public class CPU
     rtn: returns to the last branch or jump
     shr<r1><v>: bitshifts the value in the register/address right by v
     shl<r1><v>: bitshifts the value in the register/address left by v
+    mov<r1><r2>: copies the value of r1 into r2
      */
     public void interp()
     {
@@ -239,7 +240,7 @@ public class CPU
                     }
                     break;
 
-                case "rtn":
+                case "ret":
                     pc = rtnStack.pop() + 1;
                     break;
 
@@ -260,6 +261,17 @@ public class CPU
                     }
                     pc++;
                     break;    
+
+                case "mov":
+                    reg = getRegVal(instruction[1]);
+                    switch(instruction[2]) {
+                        case "rA" -> regA = reg;
+                        case "rB" -> regB = reg;
+                        case "rC" -> regC = reg;
+                        default -> memory[getRegVal(instruction[2])] = reg;
+                    }
+                    pc++;
+                    break;
 
                 default:
                     if (!instruction[0].startsWith(".") && !instruction[0].isBlank() && !labels.containsKey(instruction[0].replace("[", "").replace("]", ""))) {

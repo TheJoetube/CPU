@@ -14,8 +14,8 @@ hlt
 add rB rC rC
 dec rA 1
 bnz rA multiplication
-rtn
+ret
 
 [divideBy2]
 shr rC 1
-rtn
+ret
