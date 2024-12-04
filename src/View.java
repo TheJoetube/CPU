@@ -18,6 +18,7 @@ public class View extends JPanel {
     public JScrollPane memoryScroll;
     public JScrollPane programScroll;
     public JScrollPane outputScroll;
+    public JScrollPane trackedScroll;
     public ButtonGroup btnGroup;
     public JLabel programTxt;
     public JTextArea programField;
@@ -25,6 +26,11 @@ public class View extends JPanel {
     public JLabel outputTxt;
     public JButton stepBtn;
     public JToggleButton pauseBtn;
+    public JLabel trackedTxt;
+    public JTextArea trackedField;
+    public JTextField trackTextField;
+    public JButton trackBtn;
+    public JButton removeBtn;
 
     public View() {
         //construct components
@@ -49,6 +55,12 @@ public class View extends JPanel {
         outputScroll = new JScrollPane(consoleField);
         stepBtn = new JButton ("Step");
         pauseBtn = new JToggleButton ("RESUME", true);
+        trackedTxt = new JLabel ("<HTML><U>Tracked Addresses:</U></HTML>");
+        trackedField = new JTextArea (15, 15);
+        trackedScroll = new JScrollPane(trackedField);
+        trackTextField = new JTextField (1);
+        trackBtn = new JButton ("Track");
+        removeBtn = new JButton ("Remove");
 
         //adjust size and set layout
         setPreferredSize (new Dimension (946, 578));
@@ -78,6 +90,12 @@ public class View extends JPanel {
         add (outputTxt);
         add (stepBtn);
         add (pauseBtn);
+        add(trackedTxt);
+        //add(trackedField);
+        add(trackedScroll);
+        add (trackTextField);
+        add (trackBtn);
+        add (removeBtn);
 
         //set component bounds (only needed by Absolute Positioning)
         //memoryField.setBounds (530, 30, 415, 545);
@@ -100,9 +118,16 @@ public class View extends JPanel {
         outputTxt.setBounds (190, 355, 100, 25);
         stepBtn.setBounds (250, 325, 90, 40);
         pauseBtn.setBounds (360, 325, 90, 40);
+        trackedTxt.setBounds (195, 160, 120, 25);
+        //trackedField.setBounds (195, 180, 145, 135);
+        trackedScroll.setBounds (195, 180, 145, 135);
+        trackTextField.setBounds (355, 180, 130, 35);
+        trackBtn.setBounds (355, 225, 130, 30);
+        removeBtn.setBounds (355, 265, 130, 30);
 
         memoryField.setEditable(false);
         programField.setEditable(false);
         consoleField.setEditable(false);
+        trackedField.setEditable(false);
     }
 }

@@ -9,10 +9,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a9d0b9ee-e728-49db-829f-d48a0b09b6a4" name="Changes" comment="updated README.md">
-      <change afterPath="$PROJECT_DIR$/src/View.java" afterDir="false" />
+    <list default="true" id="a9d0b9ee-e728-49db-829f-d48a0b09b6a4" name="Changes" comment="added a UI to monitor the current CPU activity and memory. It also has the capability to pause execution and single step it">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CPU.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CPU.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI.ggp" beforeDir="false" afterPath="$PROJECT_DIR$/UI.ggp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,7 +183,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733330433076</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="added a UI to monitor the current CPU activity and memory. It also has the capability to pause execution and single step it">
+      <option name="closed" value="true" />
+      <created>1733341742361</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1733341742361</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -199,6 +207,7 @@
     <MESSAGE value="changed adi and sdi to inc and dec" />
     <MESSAGE value="added branch if not number (bnn)" />
     <MESSAGE value="updated README.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated README.md" />
+    <MESSAGE value="added a UI to monitor the current CPU activity and memory. It also has the capability to pause execution and single step it" />
+    <option name="LAST_COMMIT_MESSAGE" value="added a UI to monitor the current CPU activity and memory. It also has the capability to pause execution and single step it" />
   </component>
 </project>
