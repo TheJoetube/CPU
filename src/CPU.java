@@ -72,8 +72,8 @@ public class CPU
                 labels.put(s, i+1);
             } else if(lines[i].startsWith(".")) {
                 //set vars
-                String[] conf = lines[i].replaceAll("\\s+", "").trim().split(" ");
-                switch(conf[0]) {
+                String[] conf = lines[i].trim().split(" ");
+                switch(conf[0].replace(".", "").replaceAll("\\s+", "")) {
                     case "memSize" -> memory = new int[Integer.decode(conf[1])];
                     case "sLabel" -> startLabel = conf[1];
                     default -> System.out.println("Unknown CPU var");
@@ -262,9 +262,9 @@ public class CPU
                     break;    
 
                 default:
-                    if(!labels.containsKey(instruction[0].replace("[", "").replace("]", ""))) {
+                    if (!instruction[0].startsWith(".") && !instruction[0].isBlank() && !labels.containsKey(instruction[0].replace("[", "").replace("]", ""))) {
                         System.out.println("Unknown instruction: " + instruction[0] + " at line " + (pc + 1));
-                    }
+                    }                    
                     pc++;
                     break;
             }

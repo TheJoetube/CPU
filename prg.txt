@@ -1,8 +1,9 @@
-ldi rA 35
-ldi rB 20
-jmp start
+.sLabel start
+.memSize 0xFFFF
 
 [start]
+ldi rA 35
+ldi rB 20
 jmp multiplication
 prt rC
 jmp divideBy2
