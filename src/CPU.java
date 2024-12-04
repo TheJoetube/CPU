@@ -1,9 +1,9 @@
-import java.util.Stack;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Stack;
 
 public class CPU
 {
@@ -33,7 +33,6 @@ public class CPU
         regC = 0;
         memory = new int[memorySize];
         this.program = readFile(prg, Charset.defaultCharset());
-        //System.out.println(program);
     }
 
     static String readFile(String path, Charset encoding)
@@ -57,6 +56,8 @@ public class CPU
     bnz<r1><adr>: branches if r1 is not 0
     brn<r1><v><adr>: branches if r1 is v
     rtn: returns to the last branch or jump
+    shr<r1><v>: bitshifts the value in the register/address right by v
+    shl<r1><v>: bitshifts the value in the register/address left by v
      */
     public void interp()
     {
@@ -226,6 +227,24 @@ public class CPU
                 case "rtn":
                     pc = rtnStack.pop() + 1;
                     break;
+
+                case "shr":
+                case "shl":
+                    reg = getRegVal(instruction[1]);
+                    if(instruction[0].equals("shr")) {
+                        reg = reg >> Integer.parseInt(instruction[2]);
+                    }
+                    else {
+                        reg = reg << Integer.parseInt(instruction[2]);
+                    }
+                    switch(instruction[1]) {
+                        case "rA" -> regA = reg;
+                        case "rB" -> regB = reg;
+                        case "rC" -> regC = reg;
+                        default -> memory[getRegVal(instruction[2])] = reg;
+                    }
+                    pc++;
+                    break;    
 
                 default:
                     pc++;
