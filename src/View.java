@@ -1,0 +1,108 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
+
+public class View extends JPanel {
+    public JTextArea memoryField;
+    public JLabel memoryTxt;
+    public JRadioButton binBtn;
+    public JRadioButton decimalBtn;
+    public JRadioButton hexBtn;
+    public JLabel pcTxt;
+    public JLabel cpuTxt;
+    public JLabel regATxt;
+    public JLabel regBTxt;
+    public JLabel regCTxt;
+    public JLabel instructionTxt;
+    public JScrollPane memoryScroll;
+    public JScrollPane programScroll;
+    public JScrollPane outputScroll;
+    public ButtonGroup btnGroup;
+    public JLabel programTxt;
+    public JTextArea programField;
+    public JTextArea consoleField;
+    public JLabel outputTxt;
+    public JButton stepBtn;
+    public JToggleButton pauseBtn;
+
+    public View() {
+        //construct components
+        memoryField = new JTextArea (15, 15);
+        memoryTxt = new JLabel ("<HTML><U>Memory:</U></HTML>");
+        binBtn = new JRadioButton ("Binary");
+        decimalBtn = new JRadioButton ("Decimal", true);
+        hexBtn = new JRadioButton ("Hex");
+        pcTxt = new JLabel ("PC:");
+        cpuTxt = new JLabel ("<HTML><U>Values:</U></HTML>");
+        regATxt = new JLabel ("A:");
+        regBTxt = new JLabel ("B:");
+        regCTxt = new JLabel ("C:");
+        instructionTxt = new JLabel ("<HTML><U>Current instruction:</U></HTML>");
+        memoryScroll = new JScrollPane (memoryField);
+        btnGroup = new ButtonGroup();
+        programTxt = new JLabel ("<HTML><U>Program:</U></HTML>");
+        programField = new JTextArea (15, 15);
+        consoleField = new JTextArea (15, 15);
+        outputTxt = new JLabel ("<HTML><U>Output:</U></HTML>");
+        programScroll = new JScrollPane(programField);
+        outputScroll = new JScrollPane(consoleField);
+        stepBtn = new JButton ("Step");
+        pauseBtn = new JToggleButton ("RESUME", true);
+
+        //adjust size and set layout
+        setPreferredSize (new Dimension (946, 578));
+        setLayout (null);
+
+        //add components
+        //add (memoryField);
+        add(memoryScroll);
+        add (memoryTxt);
+        add(binBtn);
+        add(hexBtn);
+        add(decimalBtn);
+        btnGroup.add(binBtn);
+        btnGroup.add(decimalBtn);
+        btnGroup.add(hexBtn);
+        add (pcTxt);
+        add (cpuTxt);
+        add (regATxt);
+        add (regBTxt);
+        add (regCTxt);
+        add (instructionTxt);
+        add (programTxt);
+        //add (programField);
+        add (programScroll);
+        //add (consoleField);
+        add (outputScroll);
+        add (outputTxt);
+        add (stepBtn);
+        add (pauseBtn);
+
+        //set component bounds (only needed by Absolute Positioning)
+        //memoryField.setBounds (530, 30, 415, 545);
+        memoryScroll.setBounds (530, 30, 415, 545);
+        memoryTxt.setBounds (530, 5, 55, 25);
+        binBtn.setBounds (730, 5, 65, 25);
+        decimalBtn.setBounds (845, 5, 75, 25);
+        hexBtn.setBounds (795, 5, 50, 25);
+        pcTxt.setBounds (200, 30, 75, 25);
+        cpuTxt.setBounds (200, 5, 100, 25);
+        regATxt.setBounds (200, 55, 100, 25);
+        regBTxt.setBounds (200, 80, 100, 25);
+        regCTxt.setBounds (200, 105, 100, 25);
+        instructionTxt.setBounds (200, 130, 500, 25);
+        programTxt.setBounds (5, 5, 100, 25);
+        //programField.setBounds (5, 30, 180, 545);
+        programScroll.setBounds (5, 30, 180, 545);
+        //consoleField.setBounds (190, 380, 335, 195);
+        outputScroll.setBounds (190, 380, 335, 195);
+        outputTxt.setBounds (190, 355, 100, 25);
+        stepBtn.setBounds (250, 325, 90, 40);
+        pauseBtn.setBounds (360, 325, 90, 40);
+
+        memoryField.setEditable(false);
+        programField.setEditable(false);
+        consoleField.setEditable(false);
+    }
+}

@@ -1,3 +1,6 @@
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -7,6 +10,11 @@ import java.util.Stack;
 
 public class CPU
 {
+    View ui;
+
+    boolean stepMode = false;
+    boolean step = false;
+
     int[] memory;
 
     String program;
@@ -22,7 +30,7 @@ public class CPU
         regA = 0;
         regB = 0;
         regC = 0;
-        memory = new int[0xFFFF];
+        memory = new int[0xFFFF + 1];
         program = "";
     }
 
@@ -31,7 +39,7 @@ public class CPU
         regA = 0;
         regB = 0;
         regC = 0;
-        memory = new int[memorySize];
+        memory = new int[memorySize + 1];
         this.program = readFile(prg, Charset.defaultCharset());
     }
 
@@ -76,7 +84,7 @@ public class CPU
                 //set vars
                 String[] conf = lines[i].trim().split(" ");
                 switch(conf[0].replace(".", "").replaceAll("\\s+", "")) {
-                    case "memSize" -> memory = new int[Integer.decode(conf[1])];
+                    case "memSize" -> memory = new int[Integer.decode(conf[1]) + 1];
                     case "sLabel" -> startLabel = conf[1];
                     default -> System.out.println("Unknown CPU var");
                 }
@@ -86,6 +94,7 @@ public class CPU
         String[] instruction;
         int jmpAdr = 0;
         int reg;
+        String out = "";
         Stack<Integer> rtnStack = new Stack<>();
         if(startLabel != null) {
             pc = labels.get(startLabel);
@@ -93,6 +102,15 @@ public class CPU
         while(pc < lines.length) {
             String result = (lines[pc].contains("//")) ? lines[pc].substring(0, lines[pc].indexOf("//")) : lines[pc];
             instruction = result.trim().replaceAll("\\s+", " ").split(" ");
+
+            // Step Mode Handling
+            stepMode = ui.pauseBtn.isSelected();
+            if (stepMode) {
+                updateView(result, lines, out); // Show current state in UI
+                //System.out.println("Paused at PC: " + pc + " Instruction: " + result);
+                waitForStep(); // Wait for user input to proceed
+            }
+
             switch(instruction[0])
             {
                 case "nop":
@@ -179,12 +197,9 @@ public class CPU
                     break;
 
                 case "prt":
-                    switch(instruction[1]) {
-                        case "rA" -> System.out.println(regA);
-                        case "rB" -> System.out.println(regB);
-                        case "rC" -> System.out.println(regC);
-                        default -> System.out.println(memory[Integer.decode(instruction[1])]);
-                    }
+                    out = String.valueOf(getRegVal(instruction[1]));
+                    System.out.println(out);
+                    ui.consoleField.append(out + "\n");
                     pc++;
                     break;
                     
@@ -293,11 +308,37 @@ public class CPU
 
                 default:
                     if (!instruction[0].startsWith(".") && !instruction[0].isBlank() && !labels.containsKey(instruction[0].replace("[", "").replace("]", ""))) {
-                        System.out.println("Unknown instruction: " + instruction[0] + " at line " + (pc + 1));
+                        out = "Unknown instruction: " + instruction[0] + " at line " + (pc + 1);
+                        System.out.println(out);
+                        ui.consoleField.append(out + "\n");
                     }                    
                     pc++;
                     break;
             }
+            updateView(result, lines, out);
+        }
+        //shutdown();
+    }
+
+    private void waitForStep() {
+        if (stepMode) {
+            synchronized (this) {
+                try {
+                    while (!step) {
+                        wait();
+                    }
+                    step = false;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void resumeStep() {
+        synchronized (this) {
+            step = true;
+            notify();
         }
     }
 
@@ -310,9 +351,104 @@ public class CPU
         };
     }
 
+    public void updateView(String inst, String[] lines, String out) {
+        // Update instruction text
+        ui.pcTxt.setText("PC: " + pc);
+        ui.instructionTxt.setText("Current instruction: " + inst);
+
+        // Determine format type
+        boolean isHex = ui.hexBtn.isSelected();
+        boolean isBin = ui.binBtn.isSelected();
+
+        // Preformat register values
+        String regAFormatted, regBFormatted, regCFormatted;
+        if (isHex) {
+            regAFormatted = "A: 0x" + Integer.toHexString(regA).toUpperCase();
+            regBFormatted = "B: 0x" + Integer.toHexString(regB).toUpperCase();
+            regCFormatted = "C: 0x" + Integer.toHexString(regC).toUpperCase();
+        } else if (isBin) {
+            regAFormatted = "A: " + String.format("%8s", Integer.toBinaryString(regA)).replace(' ', '0');
+            regBFormatted = "B: " + String.format("%8s", Integer.toBinaryString(regB)).replace(' ', '0');
+            regCFormatted = "C: " + String.format("%8s", Integer.toBinaryString(regC)).replace(' ', '0');
+        } else {
+            regAFormatted = "A: " + regA;
+            regBFormatted = "B: " + regB;
+            regCFormatted = "C: " + regC;
+        }
+
+        ui.regATxt.setText(regAFormatted);
+        ui.regBTxt.setText(regBFormatted);
+        ui.regCTxt.setText(regCFormatted);
+
+        // Use StringBuilder for memory and program display
+        StringBuilder memoryBuilder = new StringBuilder();
+        StringBuilder programBuilder = new StringBuilder();
+
+        for (int i = 0; i < memory.length; i++) {
+            if (i > 0) {
+                if (i % 3 == 0) {
+                    memoryBuilder.append("\n");
+                } else {
+                    memoryBuilder.append(" | ");
+                }
+            }
+
+            if (isHex) {
+                memoryBuilder.append(String.format("0x%04X: 0x%04X", i, memory[i]));
+            } else if (isBin) {
+                memoryBuilder.append(String.format("0x%04X: %8s", i, Integer.toBinaryString(memory[i]).replace(' ', '0')));
+            } else {
+                memoryBuilder.append(String.format("0x%04X: %d", i, memory[i]));
+            }
+        }
+
+        for (int j = 0; j < lines.length; j++) {
+            programBuilder.append(lines[j]);
+            if (j == pc) {
+                programBuilder.append(" <-");
+            }
+            programBuilder.append("\n");
+        }
+
+        // Bulk update UI
+        ui.memoryField.setText(memoryBuilder.toString());
+        ui.programField.setText(programBuilder.toString());
+    }
+
 
     public static void main(String[] args) throws IOException {
         CPU cpu = new CPU("prg.txt", 0xFFFF);
+        View ui = new View();
+        JFrame frame = new JFrame("CPU");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().add(ui);
+        frame.pack();
+        frame.setVisible(true);
+        cpu.ui = ui;
+
+        // Synchronize `stepMode` with the initial state of `pauseBtn`
+        cpu.stepMode = ui.pauseBtn.isSelected();
+
+        ui.pauseBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!ui.pauseBtn.isSelected()) {
+                    ui.pauseBtn.setText("PAUSE");
+                    cpu.resumeStep();
+                } else {
+                    ui.pauseBtn.setText("RESUME");
+                }
+            }
+        });
+
+        ui.stepBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cpu.resumeStep();
+            }
+        });
+
+        // Start the interpreter loop
         cpu.interp();
     }
 }
