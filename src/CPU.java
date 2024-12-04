@@ -54,7 +54,8 @@ public class CPU
     prt<r1>: prints the register to the output
     bz<r1><adr>: branches if r1 is 0
     bnz<r1><adr>: branches if r1 is not 0
-    brn<r1><v><adr>: branches if r1 is v
+    bn<r1><v><adr>: branches if r1 is v
+    bnn<r1><v><adr>: branches if r1 is not v
     rtn: returns to the last branch or jump
     shr<r1><v>: bitshifts the value in the register/address right by v
     shl<r1><v>: bitshifts the value in the register/address left by v
@@ -223,7 +224,24 @@ public class CPU
                     }
                     break;
 
-                case "brn":
+                case "bnn":
+                    reg = getRegVal(instruction[1]);
+                    if(reg != Integer.parseInt(instruction[2])) {
+                        if(labels.containsKey(instruction[3])) {
+                            jmpAdr = labels.get(instruction[3])-1;
+                        } else {
+                            jmpAdr = Integer.parseInt(instruction[2]);
+                        }
+                    }
+                    if(reg != Integer.parseInt(instruction[2])) {
+                        rtnStack.push(pc);
+                        pc = jmpAdr;
+                    } else {
+                        pc++;
+                    }
+                    break;
+
+                case "bn":
                     reg = getRegVal(instruction[1]);
                     if(reg == Integer.parseInt(instruction[2])) {
                         if(labels.containsKey(instruction[3])) {

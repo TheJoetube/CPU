@@ -9,9 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a9d0b9ee-e728-49db-829f-d48a0b09b6a4" name="Changes" comment="added memory which can also be customized (0xFFFF by default). You can directly address these addresses by any instruction instead of registers.&#10;(I hope it works)">
+    <list default="true" id="a9d0b9ee-e728-49db-829f-d48a0b09b6a4" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prg.txt" beforeDir="false" afterPath="$PROJECT_DIR$/prg.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CPU.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CPU.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -27,6 +27,7 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -142,7 +143,23 @@
       <option name="project" value="LOCAL" />
       <updated>1733240464363</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="changed adi and sdi to inc and dec">
+      <option name="closed" value="true" />
+      <created>1733252105238</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1733252105239</updated>
+    </task>
+    <task id="LOCAL-00009" summary="changed adi and sdi to inc and dec">
+      <option name="closed" value="true" />
+      <created>1733252134906</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1733252134906</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -155,6 +172,7 @@
     <MESSAGE value="changed some namings" />
     <MESSAGE value="fixed the branches to work with labels and added the rtn instruction" />
     <MESSAGE value="added memory which can also be customized (0xFFFF by default). You can directly address these addresses by any instruction instead of registers.&#10;(I hope it works)" />
-    <option name="LAST_COMMIT_MESSAGE" value="added memory which can also be customized (0xFFFF by default). You can directly address these addresses by any instruction instead of registers.&#10;(I hope it works)" />
+    <MESSAGE value="changed adi and sdi to inc and dec" />
+    <option name="LAST_COMMIT_MESSAGE" value="changed adi and sdi to inc and dec" />
   </component>
 </project>
