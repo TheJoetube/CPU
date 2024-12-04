@@ -1,17 +1,20 @@
-ldi 0x0000 10
-ldi 0x0001 1
+ldi rA 35
+ldi rB 20
 jmp start
 
 [start]
-bz 0x0000 stop
-jmp addition
-dec 0x0000 1
-jmp start
+jmp multiplication
+prt rC
+jmp divideBy2
+prt rC
+hlt
 
-[addition]
-add 0x0000 0x0001 0x0002
-prt 0x0002
+[multiplication]
+add rB rC rC
+dec rA 1
+bnz rA multiplication
 rtn
 
-[stop]
-hlt
+[divideBy2]
+shr rC 1
+rtn

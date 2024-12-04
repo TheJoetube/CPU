@@ -62,19 +62,32 @@ public class CPU
     public void interp()
     {
         String[] lines = program.split("\n");
+        String startLabel = null;
 
+        //Store the labels in a map with their line number and set cpu vars
         HashMap<String, Integer> labels = new HashMap<>();
         for(int i = 0; i < lines.length; i++) {
             if(lines[i].startsWith("[")) {
                 String s = lines[i].replace("[", "").replace("]", "").replaceAll("\\s+", "");
                 labels.put(s, i+1);
+            } else if(lines[i].startsWith(".")) {
+                //set vars
+                String[] conf = lines[i].replaceAll("\\s+", "").trim().split(" ");
+                switch(conf[0]) {
+                    case "memSize" -> memory = new int[Integer.decode(conf[1])];
+                    case "sLabel" -> startLabel = conf[1];
+                    default -> System.out.println("Unknown CPU var");
                 }
+            }
         }
 
         String[] instruction;
         int jmpAdr = 0;
         int reg;
         Stack<Integer> rtnStack = new Stack<>();
+        if(startLabel != null) {
+            pc = labels.get(startLabel);
+        }
         while(pc < lines.length) {
             String result = (lines[pc].contains("//")) ? lines[pc].substring(0, lines[pc].indexOf("//")) : lines[pc];
             instruction = result.trim().replaceAll("\\s+", " ").split(" ");
@@ -172,6 +185,8 @@ public class CPU
                     }
                     pc++;
                     break;
+                    
+                    
 
                 case "bz":
                     reg = getRegVal(instruction[1]);
@@ -247,6 +262,9 @@ public class CPU
                     break;    
 
                 default:
+                    if(!labels.containsKey(instruction[0].replace("[", "").replace("]", ""))) {
+                        System.out.println("Unknown instruction: " + instruction[0] + " at line " + (pc + 1));
+                    }
                     pc++;
                     break;
             }
