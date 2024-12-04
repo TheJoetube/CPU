@@ -17,7 +17,7 @@ jmp<adr>: jumps the program counter to an address
 prt<r1>: prints the register/address to the output
 bz<r1><adr>: branches if r1 is 0
 bnz<r1><adr>: branches if r1 is not 0
-brn<r1><v><adr>: branches if r1 is v
+bn<r1><v><adr>: branches if r1 is v
 bnn<r1><v><adr>: branches if r1 is not v
 ret: returns to the last branch or jump
 shr<r1><v>: bitshifts the value in the register/address right by v

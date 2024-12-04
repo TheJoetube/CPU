@@ -9,8 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a9d0b9ee-e728-49db-829f-d48a0b09b6a4" name="Changes" comment="added branch if not number (bnn)">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="a9d0b9ee-e728-49db-829f-d48a0b09b6a4" name="Changes" comment="updated README.md">
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -166,7 +165,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733330331236</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="updated README.md">
+      <option name="closed" value="true" />
+      <created>1733330391571</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1733330391571</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -181,6 +188,7 @@
     <MESSAGE value="added memory which can also be customized (0xFFFF by default). You can directly address these addresses by any instruction instead of registers.&#10;(I hope it works)" />
     <MESSAGE value="changed adi and sdi to inc and dec" />
     <MESSAGE value="added branch if not number (bnn)" />
-    <option name="LAST_COMMIT_MESSAGE" value="added branch if not number (bnn)" />
+    <MESSAGE value="updated README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated README.md" />
   </component>
 </project>
