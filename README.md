@@ -12,7 +12,7 @@ add<r1><r2><r3>: adds r1 and r2 and places the result in r3
 sub<r1><r2><r3>: subtracts r1 from r2 and places the result in r3
 ldi<r1><v>: loads a value into the register/address
 inc<r1><v>: increments the register/address by v
-sdi<r1><v>: decrements the register/address by v
+dec<r1><v>: decrements the register/address by v
 jmp<adr>: jumps the program counter to an address
 prt<r1>: prints the register/address to the output
 bz<r1><adr>: branches if r1 is 0
