@@ -159,12 +159,10 @@ public class CPU
             instruction = result.trim().replaceAll("\\s+", " ").split(" ");
 
             if(!noUI) {
-                // Step Mode Handling
                 stepMode = ui.pauseBtn.isSelected();
                 if (stepMode) {
-                    updateView(result, lines, out); // Show current state in UI
-                    //System.out.println("Paused at PC: " + pc + " Instruction: " + result);
-                    waitForStep(); // Wait for user input to proceed
+                    updateView(result, lines, out);
+                    waitForStep();
                 }
             }
 
@@ -380,7 +378,6 @@ public class CPU
                 updateView(result, lines, out);
             }
         }
-        //shutdown();
     }
 
     private void waitForStep() {
@@ -392,7 +389,7 @@ public class CPU
                     }
                     step = false;
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    e.printStackTrace()
                 }
             }
         }
@@ -450,7 +447,7 @@ public class CPU
 
         for (int i = 0; i < memory.length; i++) {
             if (i > 0) {
-                if (i % 3 == 0) {
+                if (i % 4 == 0) {
                     memoryBuilder.append("\n");
                 } else {
                     memoryBuilder.append(" | ");

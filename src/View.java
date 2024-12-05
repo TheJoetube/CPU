@@ -31,6 +31,8 @@ public class View extends JPanel {
     public JTextField trackTextField;
     public JButton trackBtn;
     public JButton removeBtn;
+    public JSeparator sep1;
+    public JSeparator sep2;
 
     public View() {
         //construct components
@@ -61,6 +63,9 @@ public class View extends JPanel {
         trackTextField = new JTextField (1);
         trackBtn = new JButton ("+");
         removeBtn = new JButton ("-");
+
+        sep1 = new JSeparator();
+        sep2 = new JSeparator();
 
         //adjust size and set layout
         setPreferredSize (new Dimension (946, 578));
@@ -97,6 +102,9 @@ public class View extends JPanel {
         add (trackBtn);
         add (removeBtn);
 
+        add (sep1);
+        add (sep2);
+
         //set component bounds (only needed by Absolute Positioning)
         //memoryField.setBounds (530, 30, 415, 545);
         memoryScroll.setBounds (530, 30, 415, 545);
@@ -124,6 +132,9 @@ public class View extends JPanel {
         trackTextField.setBounds (350, 175, 130, 35);
         trackBtn.setBounds (350, 220, 45, 40);
         removeBtn.setBounds (400, 220, 45, 40);
+
+        sep1.setBounds(programField.getX() + programField.getWidth(), instructionTxt.getY() + instructionTxt.getHeight() + 4, 600, 10);
+        sep2.setBounds(programField.getX() + programField.getWidth(), trackedScroll.getY() + trackedScroll.getHeight() + 4, 600, 10);
 
         memoryField.setEditable(false);
         programField.setEditable(false);
