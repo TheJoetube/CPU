@@ -59,8 +59,8 @@ public class View extends JPanel {
         trackedField = new JTextArea (15, 15);
         trackedScroll = new JScrollPane(trackedField);
         trackTextField = new JTextField (1);
-        trackBtn = new JButton ("Track");
-        removeBtn = new JButton ("Remove");
+        trackBtn = new JButton ("+");
+        removeBtn = new JButton ("-");
 
         //adjust size and set layout
         setPreferredSize (new Dimension (946, 578));
@@ -121,9 +121,9 @@ public class View extends JPanel {
         trackedTxt.setBounds (195, 160, 120, 25);
         //trackedField.setBounds (195, 180, 145, 135);
         trackedScroll.setBounds (195, 180, 145, 135);
-        trackTextField.setBounds (355, 180, 130, 35);
-        trackBtn.setBounds (355, 225, 130, 30);
-        removeBtn.setBounds (355, 265, 130, 30);
+        trackTextField.setBounds (350, 175, 130, 35);
+        trackBtn.setBounds (350, 220, 45, 40);
+        removeBtn.setBounds (400, 220, 45, 40);
 
         memoryField.setEditable(false);
         programField.setEditable(false);

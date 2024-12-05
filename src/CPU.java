@@ -7,11 +7,15 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Stack;
+import java.util.ArrayList;
 
 public class CPU
 {
     View ui;
 
+    ArrayList<String> trackedList = new ArrayList<>();
+
+    boolean noUI = false;
     boolean stepMode = false;
     boolean step = false;
 
@@ -34,13 +38,64 @@ public class CPU
         program = "";
     }
 
-    public CPU(String prg, int memorySize) throws IOException {
+    public CPU(String prg, int memorySize, boolean pUI) throws IOException {
         pc = 0;
         regA = 0;
         regB = 0;
         regC = 0;
         memory = new int[memorySize + 1];
         this.program = readFile(prg, Charset.defaultCharset());
+        noUI = pUI;
+        if(!noUI) {
+            ui = new View();
+            JFrame frame = new JFrame("CPU");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.getContentPane().add(ui);
+            frame.pack();
+            frame.setVisible(true);
+
+            // Synchronize `stepMode` with the initial state of `pauseBtn`
+            stepMode = ui.pauseBtn.isSelected();
+
+            ui.pauseBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(!ui.pauseBtn.isSelected()) {
+                        ui.pauseBtn.setText("PAUSE");
+                        resumeStep();
+                    } else {
+                        ui.pauseBtn.setText("RESUME");
+                    }
+                }
+            });
+
+            ui.stepBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    resumeStep();
+                }
+            });
+
+            ui.trackBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(!ui.trackTextField.getText().matches("^[0-9a-fA-F]+$") && Integer.decode(ui.trackTextField.getText()) < memory.length + 1 && Integer.decode(ui.trackTextField.getText()) > -1) {
+                        trackedList.add(ui.trackTextField.getText());
+                        ui.trackTextField.setText("");
+                    }
+                }
+            });
+
+            ui.removeBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(!ui.trackTextField.getText().matches("^[0-9a-fA-F]+$") && Integer.decode(ui.trackTextField.getText()) < memory.length + 1 && Integer.decode(ui.trackTextField.getText()) > -1) {
+                        trackedList.remove(ui.trackTextField.getText());
+                        ui.trackTextField.setText("");
+                    }
+                }
+            });
+        }
     }
 
     static String readFile(String path, Charset encoding)
@@ -103,12 +158,14 @@ public class CPU
             String result = (lines[pc].contains("//")) ? lines[pc].substring(0, lines[pc].indexOf("//")) : lines[pc];
             instruction = result.trim().replaceAll("\\s+", " ").split(" ");
 
-            // Step Mode Handling
-            stepMode = ui.pauseBtn.isSelected();
-            if (stepMode) {
-                updateView(result, lines, out); // Show current state in UI
-                //System.out.println("Paused at PC: " + pc + " Instruction: " + result);
-                waitForStep(); // Wait for user input to proceed
+            if(!noUI) {
+                // Step Mode Handling
+                stepMode = ui.pauseBtn.isSelected();
+                if (stepMode) {
+                    updateView(result, lines, out); // Show current state in UI
+                    //System.out.println("Paused at PC: " + pc + " Instruction: " + result);
+                    waitForStep(); // Wait for user input to proceed
+                }
             }
 
             switch(instruction[0])
@@ -199,7 +256,9 @@ public class CPU
                 case "prt":
                     out = String.valueOf(getRegVal(instruction[1]));
                     System.out.println(out);
-                    ui.consoleField.append(out + "\n");
+                    if(!noUI) {
+                        ui.consoleField.append(out + "\n");
+                    }
                     pc++;
                     break;
                     
@@ -310,12 +369,16 @@ public class CPU
                     if (!instruction[0].startsWith(".") && !instruction[0].isBlank() && !labels.containsKey(instruction[0].replace("[", "").replace("]", ""))) {
                         out = "Unknown instruction: " + instruction[0] + " at line " + (pc + 1);
                         System.out.println(out);
-                        ui.consoleField.append(out + "\n");
+                        if(!noUI) {
+                            ui.consoleField.append(out + "\n");
+                        }
                     }                    
                     pc++;
                     break;
             }
-            updateView(result, lines, out);
+            if(!noUI) {
+                updateView(result, lines, out);
+            }
         }
         //shutdown();
     }
@@ -383,6 +446,7 @@ public class CPU
         // Use StringBuilder for memory and program display
         StringBuilder memoryBuilder = new StringBuilder();
         StringBuilder programBuilder = new StringBuilder();
+        StringBuilder trackedBuilder = new StringBuilder();
 
         for (int i = 0; i < memory.length; i++) {
             if (i > 0) {
@@ -410,44 +474,25 @@ public class CPU
             programBuilder.append("\n");
         }
 
+        for(String s: trackedList) {
+            if (isHex) {
+                trackedBuilder.append(s).append(String.format(": 0x%04X", memory[Integer.decode(s)])).append("\n");
+            } else if (isBin) {
+                trackedBuilder.append(s).append(String.format(": %8s", Integer.toBinaryString(memory[Integer.decode(s)]).replace(' ', '0'))).append("\n");
+            } else {
+                trackedBuilder.append(s).append(String.format(": %d", memory[Integer.decode(s)])).append("\n");
+            }
+        }
+
         // Bulk update UI
+        ui.trackedField.setText(trackedBuilder.toString());
         ui.memoryField.setText(memoryBuilder.toString());
         ui.programField.setText(programBuilder.toString());
     }
 
 
     public static void main(String[] args) throws IOException {
-        CPU cpu = new CPU("prg.txt", 0xFFFF);
-        View ui = new View();
-        JFrame frame = new JFrame("CPU");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(ui);
-        frame.pack();
-        frame.setVisible(true);
-        cpu.ui = ui;
-
-        // Synchronize `stepMode` with the initial state of `pauseBtn`
-        cpu.stepMode = ui.pauseBtn.isSelected();
-
-        ui.pauseBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(!ui.pauseBtn.isSelected()) {
-                    ui.pauseBtn.setText("PAUSE");
-                    cpu.resumeStep();
-                } else {
-                    ui.pauseBtn.setText("RESUME");
-                }
-            }
-        });
-
-        ui.stepBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cpu.resumeStep();
-            }
-        });
-
+        CPU cpu = new CPU("prg.txt", 0xFFFF, false);
         // Start the interpreter loop
         cpu.interp();
     }
