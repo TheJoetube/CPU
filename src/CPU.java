@@ -389,7 +389,7 @@ public class CPU
                     }
                     step = false;
                 } catch (InterruptedException e) {
-                    e.printStackTrace()
+                    e.printStackTrace();
                 }
             }
         }
