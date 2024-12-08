@@ -9,8 +9,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a9d0b9ee-e728-49db-829f-d48a0b09b6a4" name="Changes" comment="I'm not telling you what I changed this time">
+    <list default="true" id="a9d0b9ee-e728-49db-829f-d48a0b09b6a4" name="Changes" comment="added bitwise AND,NOT,XOR and OR">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CPU.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CPU.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -213,7 +215,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733426490330</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="I'm not telling you what I changed this time">
+      <option name="closed" value="true" />
+      <created>1733430858597</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1733430858597</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -233,6 +243,7 @@
     <MESSAGE value="added some ui elements, function for them will be in next commit" />
     <MESSAGE value="added the option to start the cpu without UI and also added a way to track memory addresses" />
     <MESSAGE value="I'm not telling you what I changed this time" />
-    <option name="LAST_COMMIT_MESSAGE" value="I'm not telling you what I changed this time" />
+    <MESSAGE value="added bitwise AND,NOT,XOR and OR" />
+    <option name="LAST_COMMIT_MESSAGE" value="added bitwise AND,NOT,XOR and OR" />
   </component>
 </project>

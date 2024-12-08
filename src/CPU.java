@@ -123,6 +123,10 @@ public class CPU
     shr<r1><v>: bitshifts the value in the register/address right by v
     shl<r1><v>: bitshifts the value in the register/address left by v
     mov<r1><r2>: copies the value of r1 into r2
+    and<r1><r2><r3>: AND's r1 and r2 and stores the result in r3
+    or<r1><r2><r3>: OR's r1 and r2 and stores the result in r3
+    xor<r1><r2><r3>: XOR's r1 and r2 and stores the result in r3
+    not<r1>: NOT's r1 and stores the value in that same register/address
      */
     public void interp()
     {
@@ -186,6 +190,9 @@ public class CPU
 
                 case "add":
                 case "sub":
+                case "and":
+                case "or":
+                case "xor":
                     int reg1;
                     int reg2;
 
@@ -203,21 +210,60 @@ public class CPU
                         default -> Integer.decode(instruction[2]);
                     };
 
-                    if(instruction[0].equals("add")) {
-                        switch(instruction[3]) {
-                            case "rA" -> regA = reg1 + reg2;
-                            case "rB" -> regB = reg1 + reg2;
-                            case "rC" -> regC = reg1 + reg2;
-                            default -> memory[Integer.decode(instruction[3])] = memory[reg1] + memory[reg2];
+                    switch (instruction[0]) {
+                        case "add" -> {
+                            switch (instruction[3]) {
+                                case "rA" -> regA = reg1 + reg2;
+                                case "rB" -> regB = reg1 + reg2;
+                                case "rC" -> regC = reg1 + reg2;
+                                default -> memory[Integer.decode(instruction[3])] = memory[reg1] + memory[reg2];
+                            }
                         }
-                    } else if(instruction[0].equals("sub")) {
-                        switch(instruction[3]) {
-                            case "rA" -> regA = reg2 - reg1;
-                            case "rB" -> regB = reg2 - reg1;
-                            case "rC" -> regC = reg2 - reg1;
-                            default -> memory[Integer.decode(instruction[3])] = memory[reg1] + memory[reg2];
+                        case "sub" -> {
+                            switch (instruction[3]) {
+                                case "rA" -> regA = reg2 - reg1;
+                                case "rB" -> regB = reg2 - reg1;
+                                case "rC" -> regC = reg2 - reg1;
+                                default -> memory[Integer.decode(instruction[3])] = memory[reg1] + memory[reg2];
+                            }
+                        }
+                        case "and" -> {
+                            switch (instruction[3]) {
+                                case "rA" -> regA = reg2 & reg1;
+                                case "rB" -> regB = reg2 & reg1;
+                                case "rC" -> regC = reg2 & reg1;
+                                default -> memory[Integer.decode(instruction[3])] = memory[reg1] & memory[reg2];
+                            }
+                        }
+
+                        case "or" -> {
+                            switch (instruction[3]) {
+                                case "rA" -> regA = reg2 | reg1;
+                                case "rB" -> regB = reg2 | reg1;
+                                case "rC" -> regC = reg2 | reg1;
+                                default -> memory[Integer.decode(instruction[3])] = memory[reg1] | memory[reg2];
+                            }
+                        }
+
+                        case "xor" -> {
+                            switch (instruction[3]) {
+                                case "rA" -> regA = reg2 ^ reg1;
+                                case "rB" -> regB = reg2 ^ reg1;
+                                case "rC" -> regC = reg2 ^ reg1;
+                                default -> memory[Integer.decode(instruction[3])] = memory[reg1] ^ memory[reg2];
+                            }
                         }
                     }
+                    pc++;
+                    break;
+
+                case "not":
+                    switch (instruction[1]) {
+                        case "rA" -> regA = ~getRegVal("rA");
+                        case "rB" -> regB = ~getRegVal("rB");
+                        case "rC" -> regC = ~getRegVal("rC");
+                        default -> memory[Integer.decode(instruction[1])] = ~memory[Integer.decode(instruction[1])];
+                    };
                     pc++;
                     break;
 

@@ -23,6 +23,10 @@ ret: returns to the last branch or jump
 shr<r1><v>: bitshifts the value in the register/address right by v
 shl<r1><v>: bitshifts the value in the register/address left by v
 mov<r1><r2>: copies the value of r1 into r2
+and<r1><r2><r3>: AND's r1 and r2 and stores the result in r3
+or<r1><r2><r3>: OR's r1 and r2 and stores the result in r3
+xor<r1><r2><r3>: XOR's r1 and r2 and stores the result in r3
+not<r1>: NOT's r1 and stores the value in that same register/address
 ```
 
 ## Additionally:
