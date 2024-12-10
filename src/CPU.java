@@ -23,10 +23,7 @@ public class CPU
 
     String program;
 
-    int pc;
-    int regA;
-    int regB;
-    int regC;
+    int pc, regA, regB, regC;
 
 
     public CPU() {
@@ -224,7 +221,7 @@ public class CPU
                                 case "rA" -> regA = reg2 - reg1;
                                 case "rB" -> regB = reg2 - reg1;
                                 case "rC" -> regC = reg2 - reg1;
-                                default -> memory[Integer.decode(instruction[3])] = memory[reg1] + memory[reg2];
+                                default -> memory[Integer.decode(instruction[3])] = memory[reg1] - memory[reg2];
                             }
                         }
                         case "and" -> {
@@ -454,6 +451,7 @@ public class CPU
             case "rB" -> regB;
             case "rC" -> regC;
             default -> memory[Integer.decode(register)];
+        
         };
     }
 
@@ -535,7 +533,7 @@ public class CPU
 
 
     public static void main(String[] args) throws IOException {
-        CPU cpu = new CPU("prg.txt", 0xFFFF, false);
+        CPU cpu = new CPU("prg.txt", 0xFFFF, true);
         // Start the interpreter loop
         cpu.interp();
     }
