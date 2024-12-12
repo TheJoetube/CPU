@@ -177,7 +177,6 @@ public class CPU
                     return;
 
                 case "jmp":
-                    rtnStack.push(pc);
                     if(labels.containsKey(instruction[1])) {
                         pc = labels.get(instruction[1])-1;
                     } else {
