@@ -532,7 +532,7 @@ public class CPU
 
 
     public static void main(String[] args) throws IOException {
-        CPU cpu = new CPU("prg.txt", 0xFFFF, true);
+        CPU cpu = new CPU("prg.txt", 0xFFFF, false);
         // Start the interpreter loop
         cpu.interp();
     }

@@ -4,9 +4,9 @@
 [start]
 ldi rA 35
 ldi rB 20
-jmp multiplication
+bnz rA multiplication
 prt rC
-jmp divideBy2
+bnz rC divideBy2
 prt rC
 hlt
 
