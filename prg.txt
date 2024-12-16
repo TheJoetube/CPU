@@ -4,9 +4,9 @@
 [start]
 ldi rA 35
 ldi rB 20
-bnz rA multiplication
+call multiplication
 prt rC
-bnz rC divideBy2
+call divideBy2
 prt rC
 hlt
 

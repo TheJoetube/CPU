@@ -13,8 +13,9 @@ sub<r1><r2><r3>: subtracts r1 from r2 and places the result in r3
 ldi<r1><v>: loads a value into the register/address
 inc<r1><v>: increments the register/address by v
 dec<r1><v>: decrements the register/address by v
-jmp<adr>: jumps the program counter to an address
+jmp<adr>: jumps the program counter to an address/label
 prt<r1>: prints the register/address to the output
+prtf<r1>: prints the register/address value of the utf8 table to the output
 bz<r1><adr>: branches if r1 is 0
 bnz<r1><adr>: branches if r1 is not 0
 bn<r1><v><adr>: branches if r1 is v
@@ -27,6 +28,7 @@ and<r1><r2><r3>: AND's r1 and r2 and stores the result in r3
 or<r1><r2><r3>: OR's r1 and r2 and stores the result in r3
 xor<r1><r2><r3>: XOR's r1 and r2 and stores the result in r3
 not<r1>: NOT's r1 and stores the value in that same register/address
+call: jumps the program counter to an address/label
 ```
 
 ## Additionally:

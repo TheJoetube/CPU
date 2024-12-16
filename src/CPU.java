@@ -184,6 +184,15 @@ public class CPU
                     }
                     break;
 
+                case "call":
+                    rtnStack.push(pc);
+                    if(labels.containsKey(instruction[1])) {
+                        pc = labels.get(instruction[1])-1;
+                    } else {
+                        pc = Integer.parseInt(instruction[1]) - 1;
+                    }
+                    break;    
+
                 case "add":
                 case "sub":
                 case "and":
@@ -301,6 +310,14 @@ public class CPU
                     }
                     pc++;
                     break;
+
+                case "prtf":
+                    System.out.println((char)getRegVal(instruction[1]));
+                    if(!noUI) {
+                        ui.consoleField.append((char)getRegVal(instruction[1]) + "\n");
+                    }
+                    pc++;
+                    break;    
                     
                     
 
