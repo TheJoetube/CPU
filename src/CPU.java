@@ -111,7 +111,8 @@ public class CPU
     inc<r1><v>: adds a value to the register
     dec<r1><v>: subtracts a value from the register
     jmp<adr>: jumps the program counter to an address
-    prt<r1>: prints the register to the output
+    prt<r1>: prints the register/address to the output
+    prtf<r1>: prints the register/address to the output as a UTF-8 formatted char
     bz<r1><adr>: branches if r1 is 0
     bnz<r1><adr>: branches if r1 is not 0
     bn<r1><v><adr>: branches if r1 is v
@@ -124,6 +125,7 @@ public class CPU
     or<r1><r2><r3>: OR's r1 and r2 and stores the result in r3
     xor<r1><r2><r3>: XOR's r1 and r2 and stores the result in r3
     not<r1>: NOT's r1 and stores the value in that same register/address
+    call: jumps the program counter to an address/label
      */
     public void interp()
     {
@@ -417,7 +419,7 @@ public class CPU
                         case "rA" -> regA = reg;
                         case "rB" -> regB = reg;
                         case "rC" -> regC = reg;
-                        default -> memory[getRegVal(instruction[2])] = reg;
+                        default -> memory[Integer.decode(instruction[2])] = reg;
                     }
                     pc++;
                     break;
